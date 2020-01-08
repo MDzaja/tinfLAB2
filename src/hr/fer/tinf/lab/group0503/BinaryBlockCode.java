@@ -45,7 +45,7 @@ public class BinaryBlockCode {
                         trueCounter++;
                     }
                 }
-                if(trueCounter%2===)
+                if(trueCounter%2==0)
                     newRow[i]=false;
                 else
                     newRow[i]=true;
