@@ -1,9 +1,12 @@
 package hr.fer.tinf.lab.group0503;
 
 import java.util.Arrays;
+import java.lang.Math;
+import java.util.*; 
 
 public class BinaryBlockCode {
     private boolean[][] gMatrix;
+    private Vector<boolean []> kMatrix;
 
     /**
      * Constructor with boolean matrix
@@ -28,6 +31,34 @@ public class BinaryBlockCode {
                 this.gMatrix[i][j] = gMatrix[i][j] == 1;
             }
         }
+        //stvaranje matrice kMatrix
+        kMatrix=new Vector<boolean[columns]>(0);
+        boolean[] includedRows=new boolean[rows];
+        Arrays.setAll(array, p -> false);
+        for(int k=1;k<Math.pow(2,rows)){
+            int trueCounter=0;
+            boolean[] newRow=new boolean[columns];
+                
+            for(int i=0;i<columns;i++){
+                for(int j=0;j<rows;j++){
+                    if(gMatrix[i] && includedRows[j]){
+                        trueCounter++;
+                    }
+                }
+                if(trueCounter%2===)
+                    newRow[i]=false;
+                else
+                    newRow[i]=true;
+            }
+            if(!kMatrix.contains(newRow))
+                kMatrix.add(newRow);
+            
+            for(int i=0;i<columns;i++){
+                if(k%pow(2,i)==0)
+                    includedRows[i]=!includedRows[i];
+            }
+        }
+        
     }
 
     public boolean[][] getgMatrix() {
@@ -59,7 +90,7 @@ public class BinaryBlockCode {
      * @return number of columns
      */
     public int getN() {
-        return gMatrix[0].length;
+        return kMatrix[0].length;
     }
 
     /**
@@ -68,7 +99,7 @@ public class BinaryBlockCode {
      * @return number of rows
      */
     public int getK() {
-        return gMatrix.length;
+        return kMatrix.length;
     }
 
     /**
