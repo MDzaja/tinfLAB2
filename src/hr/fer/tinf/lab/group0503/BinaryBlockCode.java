@@ -71,6 +71,43 @@ public class BinaryBlockCode {
         return gMatrix.length;
     }
 
+    /**
+     * Check is block code linear
+     *
+     * @return boolean true if linear else false
+     */
+    public boolean isLinear() {
+        //TODO
+        return false; //REMOVE
+    }
+
+    /**
+     * Check is matrix standard shape
+     *
+     * @return true if standard else false
+     */
+    public boolean isMatrixStandard() {
+        //TODO
+        return false; //REMOVE
+    }
+
+    /**
+     * Transform matrix to standard shape
+     */
+    public void transformMatrixToStandard() {
+        //TODO
+    }
+
+    /**
+     * Calculates code speed
+     *
+     * @return code speed
+     */
+    public int getCodeSpeed() {
+        //IDK treba li još što ovdje?!?
+        return getK() / getN();
+    }
+
 
     public static void main(String[] args) {
         //TODO
