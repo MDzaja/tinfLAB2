@@ -305,23 +305,40 @@ public class BinaryBlockCode {
         //END TEST
 
         int[][] gMatrix;
+        int[] message;
         try (Scanner sc = new Scanner(System.in)) {
             System.out.println("Enter n and m:\n");
             int n = sc.nextInt();
             int m = sc.nextInt();
             gMatrix = new int[n][m];
+            message = new int[n];
+            System.out.println("Enter G Matrix: ");
             for (int i = 0; i < n; i++) {
                 for (int j = 0; j < m; j++) {
                     gMatrix[i][j] = sc.nextInt();
                 }
             }
+            System.out.println("Enter message: ");
+            for (int i = 0; i < n; i++) {
+                message[i] = sc.nextInt();
+            }
         } catch (Exception ex) {
             ex.printStackTrace();
             gMatrix = new int[][]{{0}};
+            message = new int[]{0};
         }
 
         BinaryBlockCode code = new BinaryBlockCode(gMatrix);
 
         System.out.println(code);
+        System.out.println("Message: ");
+        for (int value : message) {
+            System.out.print(value + " ");
+        }
+        System.out.println("Encrypted message: ");
+        for (int value : code.encryptMessageWithCode(message)) {
+            System.out.print(value + " ");
+        }
+
     }
 }
