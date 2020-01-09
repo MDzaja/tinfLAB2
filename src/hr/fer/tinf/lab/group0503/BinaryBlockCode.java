@@ -290,18 +290,8 @@ public class BinaryBlockCode {
                 {0, 0, 1, 1, 0, 1}
         };
 
-        int[][] testGMatrix2 = {
-                {1, 0, 0, 0},
-                {0, 1, 0, 0},
-                {0, 0, 1, 0},
-                {0, 0, 0, 1}
-        };
         BinaryBlockCode test = new BinaryBlockCode(testGMatrix);
-        BinaryBlockCode test2 = new BinaryBlockCode(testGMatrix2);
-
         System.out.println(test);
-        System.out.println(test2);
-
         //END TEST
 
         int[][] gMatrix;
