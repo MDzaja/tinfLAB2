@@ -2,11 +2,10 @@ package hr.fer.tinf.lab.group0503;
 
 import java.util.Arrays;
 import java.lang.Math;
-import java.util.*; 
 
 public class BinaryBlockCode {
     private boolean[][] gMatrix;
-    private Vector<boolean []> kMatrix;
+    private boolean[][] kMatrix;
 
     /**
      * Constructor with boolean matrix
@@ -15,6 +14,7 @@ public class BinaryBlockCode {
      */
     public BinaryBlockCode(boolean[][] gMatrix) {
         this.gMatrix = gMatrix;
+        this.kMatrix = generateKmatrix(this.gMatrix);
     }
 
     /**
@@ -31,14 +31,26 @@ public class BinaryBlockCode {
                 this.gMatrix[i][j] = gMatrix[i][j] == 1;
             }
         }
-        //stvaranje matrice kMatrix
-        kMatrix=new Vector<boolean[columns]>(0);
-        boolean[] includedRows=new boolean[rows];
-        Arrays.setAll(array, p -> false);
-        for(int k=1;k<Math.pow(2,rows)){
+        this.kMatrix = generateKmatrix(this.gMatrix);
+    }
+
+    /**
+     * Generate kMatrix function
+     *
+     * @param gMatrix G matrix
+     * @return k Matrix
+     */
+    private static boolean[][] generateKmatrix(boolean[][] gMatrix) {
+        int columns = gMatrix[0].length;
+        int rows = gMatrix.length;
+        boolean[][] kMatrix = new boolean[columns][(int) Math.pow(2, rows)];
+        //TODO fix
+        /*boolean[] includedRows=new boolean[rows];
+        //Arrays.setAll(array, p -> false);
+        for(int k=1;k<Math.pow(2,rows);k++){
             int trueCounter=0;
             boolean[] newRow=new boolean[columns];
-                
+
             for(int i=0;i<columns;i++){
                 for(int j=0;j<rows;j++){
                     if(gMatrix[i] && includedRows[j]){
@@ -52,13 +64,13 @@ public class BinaryBlockCode {
             }
             if(!kMatrix.contains(newRow))
                 kMatrix.add(newRow);
-            
+
             for(int i=0;i<columns;i++){
                 if(k%pow(2,i)==0)
                     includedRows[i]=!includedRows[i];
             }
-        }
-        
+        }*/
+        return kMatrix;
     }
 
     public boolean[][] getgMatrix() {
@@ -69,6 +81,14 @@ public class BinaryBlockCode {
         this.gMatrix = gMatrix;
     }
 
+    public boolean[][] getkMatrix() {
+        return kMatrix;
+    }
+
+    public void setkMatrix(boolean[][] kMatrix) {
+        this.kMatrix = kMatrix;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -76,12 +96,15 @@ public class BinaryBlockCode {
 
         BinaryBlockCode that = (BinaryBlockCode) o;
 
-        return Arrays.deepEquals(gMatrix, that.gMatrix);
+        if (! Arrays.deepEquals(gMatrix, that.gMatrix)) return false;
+        return Arrays.deepEquals(kMatrix, that.kMatrix);
     }
 
     @Override
     public int hashCode() {
-        return Arrays.deepHashCode(gMatrix);
+        int result = Arrays.deepHashCode(gMatrix);
+        result = 31 * result + Arrays.deepHashCode(kMatrix);
+        return result;
     }
 
     /**
