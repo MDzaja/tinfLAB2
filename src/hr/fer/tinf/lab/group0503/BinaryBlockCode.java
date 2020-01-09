@@ -15,15 +15,8 @@ public class BinaryBlockCode {
      * @param gMatrix int matrix
      */
     public BinaryBlockCode(int[][] gMatrix) {
-        int columns = gMatrix[0].length;
-        int rows = gMatrix.length;
-        this.gMatrix = new int[rows][columns];
-        for (int i = 0; i < rows; i++) {
-            for (int j = 0; j < columns; j++) {
-                this.gMatrix[i][j] = gMatrix[i][j];
-            }
-        }
-        this.kMatrix = generateKmatrix(this.gMatrix);
+        this.gMatrix = gMatrix;
+        this.kMatrix = generateKMatrix(this.gMatrix);
     }
 
     /**
@@ -32,43 +25,41 @@ public class BinaryBlockCode {
      * @param gMatrix G matrix
      * @return k Matrix
      */
-    private static int[][] generateKmatrix(int[][] gMatrix) {
+    private static int[][] generateKMatrix(int[][] gMatrix) {
         int columns = gMatrix[0].length;
         int rows = gMatrix.length;
         int numberOfRowsInK = (int) Math.pow(2, rows);
         List<int[]> kMatrixList = new ArrayList<>();
 
-        for(int i = 0;i<=numberOfRowsInK-1;i++){
-            int [] newRow = new int[columns];
+        for (int i = 0; i <= numberOfRowsInK - 1; i++) {
+            int[] newRow = new int[columns];
 
             String bin = Integer.toBinaryString(i);
-            String zeros = new String("0");
-            zeros = zeros.repeat(rows-bin.length());
+            String zeros = "0";
+            zeros = zeros.repeat(rows - bin.length());
             bin = zeros + bin;
 
-            for(int j=0;j<columns;j++) {
+            for (int j = 0; j < columns; j++) {
                 int counter = 0;
-                for(int k =0;k<rows;k++) {
+                for (int k = 0; k < rows; k++) {
                     int pom = gMatrix[k][j] * Integer.parseInt(String.valueOf(bin.charAt(k)));
-                    if(pom == 1) counter++;
+                    if (pom == 1) counter++;
                 }
-                if(counter%2==0) {
+                if (counter % 2 == 0) {
                     newRow[j] = 0;
                 } else {
                     newRow[j] = 1;
                 }
             }
 
-            if(!kMatrixList.contains(newRow)) {
+            if (! kMatrixList.contains(newRow)) {
                 kMatrixList.add(newRow);
             }
         }
 
-        int [][] kMatrix = new int [kMatrixList.size()][columns];
-        for(int l = 0; l<kMatrixList.size();l++) {
-            for(int z = 0;z<kMatrixList.get(l).length;z++) {
-                kMatrix[l][z] = kMatrixList.get(l)[z];
-            }
+        int[][] kMatrix = new int[kMatrixList.size()][columns];
+        for (int l = 0; l < kMatrixList.size(); l++) {
+            System.arraycopy(kMatrixList.get(l), 0, kMatrix[l], 0, kMatrixList.get(l).length);
         }
 
         return kMatrix;
@@ -165,6 +156,19 @@ public class BinaryBlockCode {
 
 
     public static void main(String[] args) {
-        //TODO
+        int[][] testGMatrix = {
+                {1, 0, 0, 0, 0, 0},
+                {0, 1, 0, 1, 1, 0},
+                {0, 0, 1, 1, 0, 1}
+        };
+
+        int[][] testGMatrix2 = {
+                {1, 0, 0, 0},
+                {0, 1, 0, 0},
+                {0, 0, 1, 0},
+                {0, 0, 0, 1}
+        };
+        BinaryBlockCode code = new BinaryBlockCode(testGMatrix);
+        BinaryBlockCode code2 = new BinaryBlockCode(testGMatrix2);
     }
 }
