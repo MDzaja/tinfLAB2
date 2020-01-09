@@ -1,21 +1,13 @@
 package hr.fer.tinf.lab.group0503;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.lang.Math;
+import java.util.List;
 
 public class BinaryBlockCode {
-    private boolean[][] gMatrix;
-    private boolean[][] kMatrix;
-
-    /**
-     * Constructor with boolean matrix
-     *
-     * @param gMatrix boolean gMatrix
-     */
-    public BinaryBlockCode(boolean[][] gMatrix) {
-        this.gMatrix = gMatrix;
-        this.kMatrix = generateKmatrix(this.gMatrix);
-    }
+    private int[][] gMatrix;
+    private int[][] kMatrix;
 
     /**
      * Constructor with int matrix
@@ -25,10 +17,10 @@ public class BinaryBlockCode {
     public BinaryBlockCode(int[][] gMatrix) {
         int columns = gMatrix[0].length;
         int rows = gMatrix.length;
-        this.gMatrix = new boolean[rows][columns];
-        for (int i = 0; i < columns; i++) {
-            for (int j = 0; j < rows; j++) {
-                this.gMatrix[j][i] = gMatrix[j][i] == 1;
+        this.gMatrix = new int[rows][columns];
+        for (int i = 0; i < rows; i++) {
+            for (int j = 0; j < columns; j++) {
+                this.gMatrix[i][j] = gMatrix[i][j];
             }
         }
         this.kMatrix = generateKmatrix(this.gMatrix);
@@ -40,58 +32,61 @@ public class BinaryBlockCode {
      * @param gMatrix G matrix
      * @return k Matrix
      */
-    private static boolean[][] generateKmatrix(boolean[][] gMatrix) {
+    private static int[][] generateKmatrix(int[][] gMatrix) {
         int columns = gMatrix[0].length;
         int rows = gMatrix.length;
         int numberOfRowsInK = (int) Math.pow(2, rows);
-        boolean[][] kMatrix = new boolean[columns][numberOfRowsInK];
+        List<int[]> kMatrixList = new ArrayList<>();
 
-        for(int k = 0;k<numberOfRowsInK;k++){
-            Arrays.fill(kMatrix[k],false);
+        for(int i = 0;i<=numberOfRowsInK-1;i++){
+            int [] newRow = new int[columns];
 
-        }
-        //TODO fix
-        /*boolean[] includedRows=new boolean[rows];
-        //Arrays.setAll(array, p -> false);
-        for(int k=1;k<Math.pow(2,rows);k++){
-            int trueCounter=0;
-            boolean[] newRow=new boolean[columns];
+            String bin = Integer.toBinaryString(i);
+            String zeros = new String("0");
+            zeros = zeros.repeat(rows-bin.length());
+            bin = zeros + bin;
 
-            for(int i=0;i<columns;i++){
-                for(int j=0;j<rows;j++){
-                    if(gMatrix[i] && includedRows[j]){
-                        trueCounter++;
-                    }
+            for(int j=0;j<columns;j++) {
+                int counter = 0;
+                for(int k =0;k<rows;k++) {
+                    int pom = gMatrix[k][j] * Integer.parseInt(String.valueOf(bin.charAt(k)));
+                    if(pom == 1) counter++;
                 }
-                if(trueCounter%2==0)
-                    newRow[i]=false;
-                else
-                    newRow[i]=true;
+                if(counter%2==0) {
+                    newRow[j] = 0;
+                } else {
+                    newRow[j] = 1;
+                }
             }
-            if(!kMatrix.contains(newRow))
-                kMatrix.add(newRow);
 
-            for(int i=0;i<columns;i++){
-                if(k%pow(2,i)==0)
-                    includedRows[i]=!includedRows[i];
+            if(!kMatrixList.contains(newRow)) {
+                kMatrixList.add(newRow);
             }
-        }*/
+        }
+
+        int [][] kMatrix = new int [kMatrixList.size()][columns];
+        for(int l = 0; l<kMatrixList.size();l++) {
+            for(int z = 0;z<kMatrixList.get(l).length;z++) {
+                kMatrix[l][z] = kMatrixList.get(l)[z];
+            }
+        }
+
         return kMatrix;
     }
 
-    public boolean[][] getgMatrix() {
+    public int[][] getgMatrix() {
         return gMatrix;
     }
 
-    public void setgMatrix(boolean[][] gMatrix) {
+    public void setgMatrix(int[][] gMatrix) {
         this.gMatrix = gMatrix;
     }
 
-    public boolean[][] getkMatrix() {
+    public int[][] getkMatrix() {
         return kMatrix;
     }
 
-    public void setkMatrix(boolean[][] kMatrix) {
+    public void setkMatrix(int[][] kMatrix) {
         this.kMatrix = kMatrix;
     }
 
