@@ -32,6 +32,7 @@ public class BinaryBlockCode {
         int rows = gMatrix.length;
         int numberOfRowsInK = (int) Math.pow(2, rows);
         List<int[]> kMatrixList = new ArrayList<>();
+
         for (int i = 0; i <= numberOfRowsInK - 1; i++) {
             int[] newRow = new int[columns];
 
@@ -53,12 +54,14 @@ public class BinaryBlockCode {
                 }
             }
 
+            int kMatrixRows = kMatrixList.size();
             boolean check = false;
-            for (int[] ints : kMatrixList) {
-                if (Arrays.deepEquals(new int[][]{newRow}, new int[][]{ints})) {
+            for (int a = 0; a < kMatrixRows; a++) {
+                if (Arrays.deepEquals(new int[][]{newRow}, new int[][]{kMatrixList.get(a)})) {
                     check = true;
                 }
             }
+
             if (! check) kMatrixList.add(newRow);
         }
 
@@ -139,16 +142,53 @@ public class BinaryBlockCode {
      *
      * @return true if standard else false
      */
-    public boolean isMatrixStandard() {
-        //TODO
-        return false; //REMOVE
+    public boolean isStandardMatrix() {
+        for (int i = 0; i < gMatrix[0].length && i < gMatrix.length; i++) {
+            for (int j = 0; j < gMatrix.length; j++) {
+                if (gMatrix[j][i] == 1 && i != j || gMatrix[j][i] == 0 && i == j)
+                    return false;
+            }
+        }
+        return true;
     }
 
     /**
      * Transform matrix to standard shape
      */
-    public void transformMatrixToStandard() {
-        //TODO
+    public boolean transformMatrixToStandard() {
+        if (this.isStandardMatrix())
+            return true;
+        for (int i = 0; i < gMatrix[0].length && i < gMatrix.length; i++) {
+            // provjera je li 1 na dijagonali i ako nije trazenje prvog retka koji u tom
+            // stupcu ima 1, xor tog retka i promatranog retka kako bi doveli 1 na
+            // dijagonalu
+            if (gMatrix[i][i] == 0) {
+                int rowWithOne = - 1;
+                for (int j = 0; j < gMatrix.length; j++) {
+                    if (gMatrix[j][i] == 1) {
+                        rowWithOne = j;
+                        break;
+                    }
+                }
+                if (rowWithOne == - 1) {
+                    System.err.println("Matrix can't be transformed!");
+                    return false;
+                }
+                for (int j = 0; j < gMatrix[0].length; j++) {
+                    gMatrix[i][j] = gMatrix[i][j] ^ gMatrix[rowWithOne][j];
+                }
+            }
+            // provjera da ni jedan drugi redak nema 1 u stupcu u kojem je promatrani clan
+            // dijagonale, ako ima 1, xor tog retka i retka s promatranim clanom dijagonale
+            for (int j = 0; j < gMatrix.length; j++) {
+                if (gMatrix[j][i] == 1 && j != i) {
+                    for (int k = 0; k < gMatrix[0].length; k++) {
+                        gMatrix[j][k] = gMatrix[i][k] ^ gMatrix[j][k];
+                    }
+                }
+            }
+        }
+        return true;
     }
 
     /**
@@ -158,6 +198,38 @@ public class BinaryBlockCode {
      */
     public double getCodeSpeed() {
         return 1.0 * getK() / getN();
+    }
+
+    /**
+     * Encrypts message with block code
+     *
+     * @param message message to encrypt
+     * @return encrypted message
+     */
+    public  int[] encryptMessageWithCode(int[] message) {
+        int[] encryptedMessage = new int[gMatrix[0].length];
+
+        if (this.isStandardMatrix()) {
+            System.arraycopy(message, 0, encryptedMessage, 0, message.length);
+
+            for (int i = message.length; i < gMatrix[0].length; i++) {
+                int counter = 0;
+                for (int j = 0; j < gMatrix.length; j++) {
+                    counter += message[j] * gMatrix[j][i];
+                }
+                encryptedMessage[i] = (counter % 2 == 0) ? 0 : 1;
+
+            }
+        } else {
+            for (int i = 0; i < gMatrix[0].length; i++) {
+                int counter = 0;
+                for (int j = 0; j < gMatrix.length; j++) {
+                    counter += message[j] * gMatrix[j][i];
+                }
+                encryptedMessage[i] = (counter % 2 == 0) ? 0 : 1;
+            }
+        }
+        return encryptedMessage;
     }
 
     @Override
@@ -183,9 +255,9 @@ public class BinaryBlockCode {
 
         stringBuilder.append("N od K tablice je: ").append(getN()).append("\n");
         stringBuilder.append("K od K tablice je: ").append(getK()).append("\n");
-        if(this.isLinear()){
+        if (this.isLinear()) {
             stringBuilder.append("Kod je linearan!\n");
-        } else{
+        } else {
             stringBuilder.append("Kod nije linearan!\n");
         }
         stringBuilder.append("Brzina koda je: ").append(getCodeSpeed()).append("\n");
