@@ -14,7 +14,7 @@ public class BinaryBlockCode {
      */
     public BinaryBlockCode(boolean[][] gMatrix) {
         this.gMatrix = gMatrix;
-        this.kMatrix = generateKmatrix(this.gMatrix);
+        this.kMatrix = generateKMatrix(this.gMatrix);
     }
 
     /**
@@ -31,7 +31,7 @@ public class BinaryBlockCode {
                 this.gMatrix[j][i] = gMatrix[j][i] == 1;
             }
         }
-        this.kMatrix = generateKmatrix(this.gMatrix);
+        this.kMatrix = generateKMatrix(this.gMatrix);
     }
 
     /**
@@ -40,16 +40,19 @@ public class BinaryBlockCode {
      * @param gMatrix G matrix
      * @return k Matrix
      */
-    private static boolean[][] generateKmatrix(boolean[][] gMatrix) {
+    private static boolean[][] generateKMatrix(boolean[][] gMatrix) {
         int columns = gMatrix[0].length;
         int rows = gMatrix.length;
         int numberOfRowsInK = (int) Math.pow(2, rows);
         boolean[][] kMatrix = new boolean[columns][numberOfRowsInK];
 
-        for(int k = 0;k<numberOfRowsInK;k++){
-            Arrays.fill(kMatrix[k],false);
-
+        for (boolean[] b : kMatrix) {
+            Arrays.fill(b, false);
         }
+        calculateKMatrix(gMatrix,kMatrix,rows);
+
+
+
         //TODO fix
         /*boolean[] includedRows=new boolean[rows];
         //Arrays.setAll(array, p -> false);
@@ -77,6 +80,27 @@ public class BinaryBlockCode {
             }
         }*/
         return kMatrix;
+    }
+
+    private static void calculateKMatrix(boolean[][] arr, boolean[][] data, int end){
+        combinationUtil(arr,data,-1,false,end,0);
+    }
+
+    private static void combinationUtil(boolean[][] arr, boolean[][] data, int start,
+                                        boolean include, int end, int step) {
+        // Finished
+        if (start > end) {
+            return;
+        }
+        if (include) {
+            data[step] = xorVector(data[step], arr[start]);
+        }
+        combinationUtil(arr, data, start + 1, false, end, include ? step + 1 : step);
+        combinationUtil(arr, data, start + 1, true, end, include ? step + 1 : step);
+    }
+
+    private static boolean[] xorVector(boolean[] first, boolean[] second) {
+
     }
 
     public boolean[][] getgMatrix() {
