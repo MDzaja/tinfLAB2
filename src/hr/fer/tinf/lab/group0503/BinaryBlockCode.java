@@ -69,16 +69,8 @@ public class BinaryBlockCode {
         return gMatrix;
     }
 
-    public void setgMatrix(int[][] gMatrix) {
-        this.gMatrix = gMatrix;
-    }
-
     public int[][] getkMatrix() {
         return kMatrix;
-    }
-
-    public void setkMatrix(int[][] kMatrix) {
-        this.kMatrix = kMatrix;
     }
 
     @Override
