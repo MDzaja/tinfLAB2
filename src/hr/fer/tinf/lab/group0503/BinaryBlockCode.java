@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.lang.Math;
 import java.util.List;
+import java.util.Scanner;
 
 public class BinaryBlockCode {
     private int[][] gMatrix;
@@ -31,7 +32,6 @@ public class BinaryBlockCode {
         int rows = gMatrix.length;
         int numberOfRowsInK = (int) Math.pow(2, rows);
         List<int[]> kMatrixList = new ArrayList<>();
-
         for (int i = 0; i <= numberOfRowsInK - 1; i++) {
             int[] newRow = new int[columns];
 
@@ -53,9 +53,13 @@ public class BinaryBlockCode {
                 }
             }
 
-            if (! kMatrixList.contains(newRow)) {
-                kMatrixList.add(newRow);
+            boolean check = false;
+            for (int[] ints : kMatrixList) {
+                if (Arrays.deepEquals(new int[][]{newRow}, new int[][]{ints})) {
+                    check = true;
+                }
             }
+            if (! check) kMatrixList.add(newRow);
         }
 
         int[][] kMatrix = new int[kMatrixList.size()][columns];
@@ -63,14 +67,6 @@ public class BinaryBlockCode {
             System.arraycopy(kMatrixList.get(l), 0, kMatrix[l], 0, kMatrixList.get(l).length);
         }
 
-        return kMatrix;
-    }
-
-    public int[][] getgMatrix() {
-        return gMatrix;
-    }
-
-    public int[][] getkMatrix() {
         return kMatrix;
     }
 
@@ -116,8 +112,18 @@ public class BinaryBlockCode {
      * @return boolean true if linear else false
      */
     public boolean isLinear() {
-        //TODO
-        return false; //REMOVE
+        //TODO FIX
+        /*for(int i =0;i<firstMatrix.length;i++){
+            boolean check = false;
+            for(int j = 0;j<secodMatrix.length;j++){
+                if(Arrays.deepEquals(new int[][]{firstMatrix[i]}, new int[][]{secodMatrix[j]})){
+                    check = true;
+                    break;
+                }
+            }
+            if(!check) return false;
+        }*/
+        return true;
     }
 
     /**
@@ -142,12 +148,39 @@ public class BinaryBlockCode {
      *
      * @return code speed
      */
-    public int getCodeSpeed() {
-        return getK() / getN();
+    public double getCodeSpeed() {
+        return 1.0 * getK() / getN();
     }
 
+    @Override
+    public String toString() {
+        StringBuilder stringBuilder = new StringBuilder();
+        stringBuilder.append("G Matrix:\n");
+        for (int[] matrix : gMatrix) {
+            for (int j = 0; j < gMatrix[0].length; j++) {
+                stringBuilder.append(matrix[j]).append(" ");
+            }
+            stringBuilder.append("\n");
+        }
+
+        stringBuilder.append("K Matrix:\n");
+        for (int[] matrix : kMatrix) {
+            for (int j = 0; j < kMatrix[0].length; j++) {
+                stringBuilder.append(matrix[j]).append(" ");
+            }
+            stringBuilder.append("\n");
+        }
+
+        stringBuilder.append("n od K tablice je: ").append(getN()).append("\n");
+        stringBuilder.append("k od N tablice je: ").append(getK());
+
+        stringBuilder.append("Brzina koda je: ").append(getCodeSpeed());
+
+        return stringBuilder.toString();
+    }
 
     public static void main(String[] args) {
+        //TEST
         int[][] testGMatrix = {
                 {1, 0, 0, 0, 0, 0},
                 {0, 1, 0, 1, 1, 0},
@@ -160,8 +193,39 @@ public class BinaryBlockCode {
                 {0, 0, 1, 0},
                 {0, 0, 0, 1}
         };
-        BinaryBlockCode code = new BinaryBlockCode(testGMatrix);
-        BinaryBlockCode code2 = new BinaryBlockCode(testGMatrix2);
-        //TODO
+        BinaryBlockCode test = new BinaryBlockCode(testGMatrix);
+        BinaryBlockCode test2 = new BinaryBlockCode(testGMatrix2);
+        //END TEST
+
+        Scanner sc = new Scanner(System.in);
+
+        int n = sc.nextInt();
+        int m = sc.nextInt();
+
+        int[][] gMatrix = new int[n][m];
+
+        for (int i = 0; i < n; i++) {
+            for (int j = 0; j < m; j++) {
+                gMatrix[i][j] = sc.nextInt();
+            }
+        }
+
+        BinaryBlockCode code = new BinaryBlockCode(gMatrix);
+
+        System.out.println(code);
+
+        //Čemu ovo?
+
+        /*int[][] newKMatrix = generateKMatrix(kMatrix);
+
+        for (int i = 0; i < newKMatrix.length; i++) {
+            StringBuilder builder = new StringBuilder();
+            for (int j = 0; j < newKMatrix[0].length; j++) {
+                builder.append(newKMatrix[i][j] + " ");
+            }
+            System.out.println(builder);
+        }
+        System.out.println(isLinear(kMatrix, newKMatrix));*/
+
     }
 }
