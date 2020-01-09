@@ -25,10 +25,10 @@ public class BinaryBlockCode {
     public BinaryBlockCode(int[][] gMatrix) {
         int columns = gMatrix[0].length;
         int rows = gMatrix.length;
-        this.gMatrix = new boolean[columns][rows];
+        this.gMatrix = new boolean[rows][columns];
         for (int i = 0; i < columns; i++) {
             for (int j = 0; j < rows; j++) {
-                this.gMatrix[i][j] = gMatrix[i][j] == 1;
+                this.gMatrix[j][i] = gMatrix[j][i] == 1;
             }
         }
         this.kMatrix = generateKmatrix(this.gMatrix);
@@ -43,7 +43,13 @@ public class BinaryBlockCode {
     private static boolean[][] generateKmatrix(boolean[][] gMatrix) {
         int columns = gMatrix[0].length;
         int rows = gMatrix.length;
-        boolean[][] kMatrix = new boolean[columns][(int) Math.pow(2, rows)];
+        int numberOfRowsInK = (int) Math.pow(2, rows);
+        boolean[][] kMatrix = new boolean[columns][numberOfRowsInK];
+
+        for(int k = 0;k<numberOfRowsInK;k++){
+            Arrays.fill(kMatrix[k],false);
+
+        }
         //TODO fix
         /*boolean[] includedRows=new boolean[rows];
         //Arrays.setAll(array, p -> false);
