@@ -11,6 +11,7 @@ public class BinaryBlockCode {
 
     /**
      * Constructor with int matrix
+     * Generates K matrix
      *
      * @param gMatrix int matrix
      */
@@ -142,7 +143,6 @@ public class BinaryBlockCode {
      * @return code speed
      */
     public int getCodeSpeed() {
-        //IDK treba li još što ovdje?!?
         return getK() / getN();
     }
 
@@ -162,5 +162,6 @@ public class BinaryBlockCode {
         };
         BinaryBlockCode code = new BinaryBlockCode(testGMatrix);
         BinaryBlockCode code2 = new BinaryBlockCode(testGMatrix2);
+        //TODO
     }
 }
