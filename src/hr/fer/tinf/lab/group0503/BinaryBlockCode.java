@@ -105,7 +105,7 @@ public class BinaryBlockCode {
      * @return number of columns
      */
     public int getN() {
-        return kMatrix[0].length;
+        return gMatrix[0].length;
     }
 
     /**
@@ -114,7 +114,7 @@ public class BinaryBlockCode {
      * @return number of rows
      */
     public int getK() {
-        return kMatrix.length;
+        return gMatrix.length;
     }
 
     /**
