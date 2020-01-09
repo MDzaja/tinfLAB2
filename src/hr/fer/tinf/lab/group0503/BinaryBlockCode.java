@@ -54,10 +54,9 @@ public class BinaryBlockCode {
                 }
             }
 
-            int kMatrixRows = kMatrixList.size();
             boolean check = false;
-            for (int a = 0; a < kMatrixRows; a++) {
-                if (Arrays.deepEquals(new int[][]{newRow}, new int[][]{kMatrixList.get(a)})) {
+            for (int[] ints : kMatrixList) {
+                if (Arrays.deepEquals(new int[][]{newRow}, new int[][]{ints})) {
                     check = true;
                 }
             }
@@ -274,7 +273,6 @@ public class BinaryBlockCode {
                     }
                     stringBuilder.append("\n");
                 }
-                stringBuilder.append("\n");
             }
         }
         stringBuilder.append("Brzina koda je: ").append(getCodeSpeed()).append("\n");
@@ -285,9 +283,8 @@ public class BinaryBlockCode {
     public static void main(String[] args) {
         //TEST
         int[][] testGMatrix = {
-                {1, 0, 0, 0, 0, 0},
-                {0, 1, 0, 1, 1, 0},
-                {0, 0, 1, 1, 0, 1}
+                {0, 0, 1, 1, 1},
+                {1, 1, 0, 1, 1}
         };
 
         BinaryBlockCode test = new BinaryBlockCode(testGMatrix);
