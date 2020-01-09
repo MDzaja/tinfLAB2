@@ -162,6 +162,7 @@ public class BinaryBlockCode {
             }
             stringBuilder.append("\n");
         }
+        stringBuilder.append("\n");
 
         stringBuilder.append("K Matrix:\n");
         for (int[] matrix : kMatrix) {
@@ -170,11 +171,12 @@ public class BinaryBlockCode {
             }
             stringBuilder.append("\n");
         }
+        stringBuilder.append("\n");
 
-        stringBuilder.append("n od K tablice je: ").append(getN()).append("\n");
-        stringBuilder.append("k od N tablice je: ").append(getK());
+        stringBuilder.append("N od K tablice je: ").append(getN()).append("\n");
+        stringBuilder.append("K od K tablice je: ").append(getK()).append("\n");
 
-        stringBuilder.append("Brzina koda je: ").append(getCodeSpeed());
+        stringBuilder.append("Brzina koda je: ").append(getCodeSpeed()).append("\n");
 
         return stringBuilder.toString();
     }
@@ -196,9 +198,12 @@ public class BinaryBlockCode {
         BinaryBlockCode test = new BinaryBlockCode(testGMatrix);
         BinaryBlockCode test2 = new BinaryBlockCode(testGMatrix2);
         //END TEST
+        System.out.println(test);
+        System.out.println(test2);
 
         Scanner sc = new Scanner(System.in);
 
+        System.out.println("Enter n and m:\n");
         int n = sc.nextInt();
         int m = sc.nextInt();
 
