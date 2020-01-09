@@ -158,23 +158,23 @@ public class BinaryBlockCode {
         if (this.isStandardMatrix())
             return true;
         for (int i = 0; i < gMatrix[0].length && i < gMatrix.length; i++) {
-            // provjera je li 1 na dijagonali i ako nije trazenje prvog retka koji u tom
-            // stupcu ima 1, xor tog retka i promatranog retka kako bi doveli 1 na
-            // dijagonalu
+            
             if (gMatrix[i][i] == 0) {
-                int rowWithOne = - 1;
-                for (int j = 0; j < gMatrix.length; j++) {
-                    if (gMatrix[j][i] == 1) {
-                        rowWithOne = j;
+                int columnWithOne = -1;
+                for (int j = 0; j < gMatrix[0].length; j++) {
+                    if (gMatrix[i][j] == 1) {
+                        columnWithOne = j;
                         break;
                     }
                 }
-                if (rowWithOne == - 1) {
-                    System.err.println("Matrix can't be transformed!");
+                if (columnWithOne == -1) {
+                    System.out.println("Matricu G nije moguce transformirati u standardni oblik.");
                     return false;
                 }
-                for (int j = 0; j < gMatrix[0].length; j++) {
-                    gMatrix[i][j] = gMatrix[i][j] ^ gMatrix[rowWithOne][j];
+                for (int j = 0; j < gMatrix.length; j++) {
+                    int tmp = gMatrix[j][i];
+                    gMatrix[j][i] = gMatrix[j][columnWithOne];
+                    gMatrix[j][columnWithOne] = tmp;
                 }
             }
             // provjera da ni jedan drugi redak nema 1 u stupcu u kojem je promatrani clan
