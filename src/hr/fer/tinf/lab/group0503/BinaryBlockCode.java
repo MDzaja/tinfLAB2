@@ -206,7 +206,7 @@ public class BinaryBlockCode {
      * @param message message to encrypt
      * @return encrypted message
      */
-    public  int[] encryptMessageWithCode(int[] message) {
+    public int[] encryptMessageWithCode(int[] message) {
         int[] encryptedMessage = new int[gMatrix[0].length];
 
         if (this.isStandardMatrix()) {
@@ -260,6 +260,23 @@ public class BinaryBlockCode {
         } else {
             stringBuilder.append("Kod nije linearan!\n");
         }
+
+        if (this.isStandardMatrix()) {
+            stringBuilder.append("G matrica je standarnog oblika!").append("\n");
+        } else {
+            stringBuilder.append("G matrica nije standarnog oblika!").append("\n");
+            stringBuilder.append("Transformiranje G matrice...").append("\n");
+            if (this.transformMatrixToStandard()) {
+                stringBuilder.append("Nova G matrica:").append("\n");
+                for (int[] matrix : gMatrix) {
+                    for (int j = 0; j < gMatrix[0].length; j++) {
+                        stringBuilder.append(matrix[j]).append(" ");
+                    }
+                    stringBuilder.append("\n");
+                }
+                stringBuilder.append("\n");
+            }
+        }
         stringBuilder.append("Brzina koda je: ").append(getCodeSpeed()).append("\n");
 
         return stringBuilder.toString();
@@ -287,23 +304,24 @@ public class BinaryBlockCode {
 
         //END TEST
 
-        Scanner sc = new Scanner(System.in);
-
-        System.out.println("Enter n and m:\n");
-        int n = sc.nextInt();
-        int m = sc.nextInt();
-
-        int[][] gMatrix = new int[n][m];
-
-        for (int i = 0; i < n; i++) {
-            for (int j = 0; j < m; j++) {
-                gMatrix[i][j] = sc.nextInt();
+        int[][] gMatrix;
+        try (Scanner sc = new Scanner(System.in)) {
+            System.out.println("Enter n and m:\n");
+            int n = sc.nextInt();
+            int m = sc.nextInt();
+            gMatrix = new int[n][m];
+            for (int i = 0; i < n; i++) {
+                for (int j = 0; j < m; j++) {
+                    gMatrix[i][j] = sc.nextInt();
+                }
             }
+        } catch (Exception ex) {
+            ex.printStackTrace();
+            gMatrix = new int[][]{{0}};
         }
 
         BinaryBlockCode code = new BinaryBlockCode(gMatrix);
 
         System.out.println(code);
-
     }
 }
